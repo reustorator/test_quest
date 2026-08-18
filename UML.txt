@@ -1,0 +1,26 @@
+@startuml
+
+actor Пользователь
+participant "Мобильное приложение" as App
+participant "Backend API" as Backend
+database "База данных" as DB
+participant "Email-сервис" as Email
+
+Пользователь -> App: Вводит email и пароль
+App -> Backend: Запрос на регистрацию
+
+Backend -> Backend: Проверка формата email\nи требований к паролю
+
+Backend -> DB: Проверить пользователя по email
+DB --> Backend: Пользователь не найден
+
+Backend -> DB: Создать учетную запись\nPENDING_VERIFICATION
+DB --> Backend: Учетная запись создана
+
+Backend -> Email: Отправить письмо подтверждения
+Email --> Backend: Письмо принято к отправке
+
+Backend --> App: Регистрация выполнена\nТребуется подтвердить email
+App --> Пользователь: Показать сообщение
+
+@enduml
